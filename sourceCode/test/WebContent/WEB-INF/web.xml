@@ -36,7 +36,8 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>example</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<!-- 这里不推荐使用/*的方式配置，因为在spring mvc 转发请求的时候，spring的约定的uri是没有后缀的，如果这里也没有后缀，就会发生冲突，早场spring的mvc在转发请求的时候失效 -->
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
 
