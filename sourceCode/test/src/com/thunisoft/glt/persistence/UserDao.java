@@ -16,7 +16,7 @@ public class UserDao {
 	public int jdbcInsert(String username) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:9306/gltmaven?user=root&password=123456";
+			String url = "jdbc:mysql://gltest975.mysql.rds.aliyuncs.com:3306/glt?user=glt975&password=671239137";
 			Connection con = DriverManager.getConnection(url);
 			Statement st = con.createStatement();
 			String sql = "INSERT INTO gltuser(username)  VALUES ('" + username + "')";
