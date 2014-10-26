@@ -1,40 +1,52 @@
 package com.thunisoft.glt.spring.mvc.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.thunisoft.glt.persistence.UserService;
+
 @Controller
 public class LoginController {
+	
+	private static final Log logger = LogFactory.getLog(LoginController.class);
+	@Autowired
+	private UserService userService;
 
 	/*
-	 * @PathVariable ×¢½â¿ÉÒÔ×Ô¶¯½«URIÖĞµÄ²ÎÊı×¢Èëµ½·½·¨µÄ²ÎÊıÖĞ Õâ¸öURI¿ÉÒÔÊÇ·½·¨ÉÏµÄ@PathVariable
-	 * £¬Ò²¿ÉÒÔÊÇÀàÉÏµÄÖ¸¶¨µÄ ÕâÀïÒ²Ö§³ÖÕıÔò±í´ïÊ½£¬ÀıÈç{version:\\d\\.\\d\\.\\d}{extension:\\.[a-z]}£¬
-	 * ÆäÖĞversionºÍextensionÊÇ²ÎÊıµÄÃû×Ö£¬ÓÃÓÚÔÚÆäËûµØ·½ÒıÓÃ
-	 * URIÖĞµÄ${...}ÖĞµÄÕ¼Î»·û»¹¿ÉÒÔÖ±½Ó»ñÈ¡ÊôĞÔÎÄ¼şÖĞµÄÖµ£¬ËùÒÔ¿ÉÒÔ°ÑcontrollerµÄpathÅäÖÃµ½ÊôĞÔÎÄ¼şÖĞ
-	 * ¡£Ïê¼û£ºPropertyPlaceholderConfigurer ÕâÀï»¹¿ÉÒÔÊ¹ÓÃMatrix variables£¬ÏÖÔÚ»¹Ã»ÅªÃ÷°×£¬ÒÔºóÔÙ¿´¡£
+	 * @PathVariable æ³¨è§£å¯ä»¥è‡ªåŠ¨å°†URIä¸­çš„å‚æ•°æ³¨å…¥åˆ°æ–¹æ³•çš„å‚æ•°ä¸­ è¿™ä¸ªURIå¯ä»¥æ˜¯æ–¹æ³•ä¸Šçš„@PathVariable
+	 * ï¼Œä¹Ÿå¯ä»¥æ˜¯ç±»ä¸Šçš„æŒ‡å®šçš„ è¿™é‡Œä¹Ÿæ”¯æŒæ­£åˆ™è¡¨è¾¾å¼ï¼Œä¾‹å¦‚{version:\\d\\.\\d\\.\\d}{extension:\\.[a-z]}ï¼Œ
+	 * å…¶ä¸­versionå’Œextensionæ˜¯å‚æ•°çš„åå­—ï¼Œç”¨äºåœ¨å…¶ä»–åœ°æ–¹å¼•ç”¨
+	 * URIä¸­çš„${...}ä¸­çš„å ä½ç¬¦è¿˜å¯ä»¥ç›´æ¥è·å–å±æ€§æ–‡ä»¶ä¸­çš„å€¼ï¼Œæ‰€ä»¥å¯ä»¥æŠŠcontrollerçš„pathé…ç½®åˆ°å±æ€§æ–‡ä»¶ä¸­
+	 * ã€‚è¯¦è§ï¼šPropertyPlaceholderConfigurer è¿™é‡Œè¿˜å¯ä»¥ä½¿ç”¨Matrix variablesï¼Œç°åœ¨è¿˜æ²¡å¼„æ˜ç™½ï¼Œä»¥åå†çœ‹ã€‚
 	 * 
-	 * @RequestParamÓÃÀ´»ñÈ¡ÇëÇóÖĞµÄ²ÎÊı¡£
+	 * @RequestParamç”¨æ¥è·å–è¯·æ±‚ä¸­çš„å‚æ•°ã€‚
 	 */
-	@RequestMapping(value = "/login/{user}", method = RequestMethod.GET)
-	public String login(@PathVariable("user") String userName,
-			@RequestParam("gender") String gender) {
-		System.out.println(userName);
-		System.out.println(gender);
+	@RequestMapping(value = "/signin", method = RequestMethod.GET )
+	public String login(@RequestParam("username") String username) {
+		System.out.println(username);
+		try {
+			System.out.println(new String(username.getBytes("utf8"), "gbk"));
+		} catch (UnsupportedEncodingException e) {
+			logger.error("", e);
+		}
+		userService.signIn(username);
 		return "target";
 	}
 
 	@RequestMapping(value = "/something", method = RequestMethod.GET)
 	public void handle(@RequestBody String body, Writer writer)
 			throws IOException {
-		System.out.println(body);
-//		writer.write(body);
+		logger.info(body);
 	}
 
 }
