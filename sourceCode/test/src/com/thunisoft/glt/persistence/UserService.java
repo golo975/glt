@@ -13,8 +13,10 @@ public class UserService {
 	private UserDao userDao ;
 	
 	public boolean signIn(String username) {
-		int i = userDao.jdbcInsert(username);
-		logger.info(i);
+//		int i = userDao.jdbcInsert(username);
+//		int i = userDao.jdbcTemplateInsert(username);
+		int i = userDao.insertAndGetPK(username);
+		logger.info("新插入的值的主键是：" + i);
 		return true;
 	}
 }
