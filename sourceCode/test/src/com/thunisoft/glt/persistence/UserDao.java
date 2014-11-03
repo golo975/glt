@@ -5,12 +5,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import com.thunisoft.glt.bean.User;
 
 //@Repository("userDao")
 public class UserDao extends BaseDao{
@@ -74,10 +78,33 @@ public class UserDao extends BaseDao{
 	
 	/**
 	 * 批量更新操作
+	 * 实际试了试，batcheUpdate 和 update 的效果是一样的
 	 */
-	// TODO 批量更新操作
-	public void batchUpdate(){
-//		getJdbcTemplate().batchUpdate
+	public void batchUpdate(String username){
+		String sql = " update gltuser set username = '" + username + "' ";
+//		getJdbcTemplate().batchUpdate(sql);
+		getJdbcTemplate().update(sql);
+	}
+	
+	public void batchUpdate(final List<User> userList){
+		String sql = " update gltuser set username = ? where id = ? ";
+		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setString(1, userList.get(i).getName());
+				ps.setInt(2, userList.get(i).getId());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return userList.size();
+			}
+		});
+	}
+	
+	public void batchUpdate2(final List<User> userList){
+		// TODO 13.4.2 Batch operations with a List of objects
 	}
 	
 }
