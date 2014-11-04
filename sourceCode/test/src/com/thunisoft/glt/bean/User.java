@@ -3,8 +3,7 @@ package com.thunisoft.glt.bean;
 public class User {
 
 	private int id ;
-	private String name;
-	
+	private String username;
 	public int getId() {
 		return id;
 	}
@@ -12,12 +11,15 @@ public class User {
 		this.id = id;
 		return this;
 	}
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
-	public User setName(String name) {
-		this.name = name;
+	public User setUsername(String username) {
+		this.username = username;
 		return this;
 	}
+	
+	
+	
 	
 }

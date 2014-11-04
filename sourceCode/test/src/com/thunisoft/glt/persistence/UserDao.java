@@ -5,12 +5,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -86,13 +91,17 @@ public class UserDao extends BaseDao{
 		getJdbcTemplate().update(sql);
 	}
 	
+	/**
+	 * 这种做法的思路是，把需要的参数包装为一个可以通过索引来一次访问的数据结构，所以在这个内部类里需要两个方法来分别指名需要遍历的索引的范围，和使用索引来处理数据的方式
+	 * @param userList
+	 */
 	public void batchUpdate(final List<User> userList){
 		String sql = " update gltuser set username = ? where id = ? ";
 		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setString(1, userList.get(i).getName());
+				ps.setString(1, userList.get(i).getUsername());
 				ps.setInt(2, userList.get(i).getId());
 			}
 			
@@ -103,13 +112,36 @@ public class UserDao extends BaseDao{
 		});
 	}
 	
-	public void batchUpdate2(final List<User> userList){
+	/**
+	 * 相对使用BatchPreparedStatementSetter的方式，下面这种方式更加简洁，因为需要循环的是整个数组，因此不需要在提供循环的范围了。
+	 * 当然也可以说这失去了某些灵活性，但是这种所谓的灵活性在大多数情况下是没有什么必要的。
+	 * 需要注意的是，下面这个方法是基于NamedParameterJdbcTemplate的，而上面的方法是基于基本的JdbcTemplate的。
+	 * @param userList
+	 * @return
+	 */
+	public int[] batchUpdate2(final List<User> userList){
 		// TODO 13.4.2 Batch operations with a List of objects
+		//SqlParameterSource用来封装命名式的sql参数（即命名式占位符），用来作为NamedParameterJdbcTemplate类中的各个方法的参数
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(userList.toArray());//这里的SqlParameterSource也可以用以String为key的Map代替
+		int[] updateCounts = new NamedParameterJdbcTemplate(getDataSource()).batchUpdate(" update gltuser set username = :username where id = :id", batch);
+		return updateCounts;
 	}
 	
+	/**
+	 * 需要特别注意的是，这里的update并不仅仅包括update操作，也包括inset和delete（即不包括select操作）。
+	 */
 	@SuppressWarnings("unchecked")
-	public List<User> getUsers(){
-		return getJdbcTemplate().queryForObject("", List.class);
+	public void batchUpdate_insert(){
+		Map<String, String> map1 = new HashMap<String, String>();
+		map1.put("username", "gaolong");
+		Map<String, String> map2 = new HashMap<String, String>();
+		map2.put("username", "maying");
+		new NamedParameterJdbcTemplate(getDataSource()).batchUpdate(" insert into gltuser (username) values ( :username ) ", new Map[]{map1, map2});
+	}
+	
+	public Integer getUser(int id){
+//		return getJdbcTemplate().queryForObject("select id from gltuser where id = 1 ", Integer.class);
+		return getJdbcTemplate().queryForObject("select id from gltuser where id = ? ", Integer.class, id);
 	}
 	
 }
