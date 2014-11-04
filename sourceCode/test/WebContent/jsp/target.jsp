@@ -11,6 +11,7 @@ hello world! <br />
 <table>
 </table>
 <ol>
+<% request.getParameter(""); %>
 	<li>1</li>
 	<li>2</li>
 	<li>3</li>

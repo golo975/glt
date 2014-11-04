@@ -30,4 +30,8 @@ public class UserService {
 		userDao.batchUpdate(list);
 		return true;
 	}
+	
+	public List<User> getUsers(){
+		return userDao.getUsers();
+	}
 }

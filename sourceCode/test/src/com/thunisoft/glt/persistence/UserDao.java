@@ -107,4 +107,9 @@ public class UserDao extends BaseDao{
 		// TODO 13.4.2 Batch operations with a List of objects
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<User> getUsers(){
+		return getJdbcTemplate().queryForObject("", List.class);
+	}
+	
 }
