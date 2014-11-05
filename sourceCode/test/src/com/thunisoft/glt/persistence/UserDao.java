@@ -116,6 +116,7 @@ public class UserDao extends BaseDao{
 	 * 相对使用BatchPreparedStatementSetter的方式，下面这种方式更加简洁，因为需要循环的是整个数组，因此不需要在提供循环的范围了。
 	 * 当然也可以说这失去了某些灵活性，但是这种所谓的灵活性在大多数情况下是没有什么必要的。
 	 * 需要注意的是，下面这个方法是基于NamedParameterJdbcTemplate的，而上面的方法是基于基本的JdbcTemplate的。
+	 * 如果sql的参数的占位符(placeholder)是传统的?（问号）,就必须保证传入的参数的位置和sql中的参数的位置一一对应。
 	 * @param userList
 	 * @return
 	 */
@@ -139,8 +140,17 @@ public class UserDao extends BaseDao{
 		new NamedParameterJdbcTemplate(getDataSource()).batchUpdate(" insert into gltuser (username) values ( :username ) ", new Map[]{map1, map2});
 	}
 	
+	/**
+	 * 如果需要批量执行的sql太多，想要分批次执行，比如以100条为一批次执行，可以使用这个方法。
+	 * 问题是，JdbcTemplate 在批量执行sql的时候，不会做一下优化，而是直接把所有的sql都一下子执行吗？
+	 * 数据库没有相关的优化吗？为什么要把这种事情留给编写业务代码的程序员来做？
+	 */
+	public void batchUpdate3(){
+		// TODO 
+		getJdbcTemplate().batchUpdate("sql", null, 100, null);
+	}
+	
 	public Integer getUser(int id){
-//		return getJdbcTemplate().queryForObject("select id from gltuser where id = 1 ", Integer.class);
 		return getJdbcTemplate().queryForObject("select id from gltuser where id = ? ", Integer.class, id);
 	}
 	
