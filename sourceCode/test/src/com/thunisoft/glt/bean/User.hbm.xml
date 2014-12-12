@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-4.0.dtd" >
+
+<hibernate-mapping package="com.thunisoft.glt.bean">
+	<class name="User" table="gltuser" >
+        <id name="Mc" type="java.lang.Integer" column="id" length="100">
+			<generator class="assigned" />
+		</id>
+		<property name="username" column="username" type="java.lang.String" />
+	</class>	
+</hibernate-mapping>

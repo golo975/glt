@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +20,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import com.thunisoft.glt.bean.User;
 
@@ -154,4 +157,15 @@ public class UserDao extends BaseDao{
 		return getJdbcTemplate().queryForObject("select id from gltuser where id = ? ", Integer.class, id);
 	}
 	
+//	private HibernateTemplate hibernateTemplate;
+//
+//    public void setSessionFactory(SessionFactory sessionFactory) {
+//        this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+//    }
+    
+	public void insertByHibernate(HibernateTemplate hibernateTemplate){
+		User user = new User();
+		user.setUsername("hibernate");
+		hibernateTemplate.update(user);
+	}
 }

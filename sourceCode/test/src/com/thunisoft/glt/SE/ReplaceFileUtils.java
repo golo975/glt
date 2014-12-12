@@ -10,18 +10,10 @@ import org.apache.commons.io.FilenameUtils;
 public class ReplaceFileUtils {
 
 	public static void main(String[] args) throws IOException {
-		String srcDir = "C:/Users/gaolong/Desktop/spxxpt/WEB-INF/classes/";
-		String destDir = "C:/Users/gaolong/Desktop/替换文件/spxxpt/WEB-INF/classes/";
-		String[] filePathArray = {"com/thunisoft/spxxpt/common/Consts.class",
-				"com/thunisoft/spxxpt/fbsh/service/impl/FbshServiceImpl.class", 
-				"com/thunisoft/spxxpt/grfb/service/impl/WsgkServiceImpl.class", 
-				"com/thunisoft/spxxpt/webservice/IYwxtWebService.class",
-				"com/thunisoft/spxxpt/webservice/SPXTWebServiceClient.class", 
-				"com/thunisoft/spxxpt/webservice/bean/WritInfo.class", 
-				"com/thunisoft/spxxpt/webservice/impl/YwxtWebServiceImpl.class", 
-				"com/thunisoft/spxxpt/ywxt/service/IAppService.class", 
-				"com/thunisoft/spxxpt/ywxt/service/impl/AppServiceImpl.class", 
-				"com/thunisoft/spxxpt/ywxt/service/impl/YwxtAjxxServiceImpl.class"};
+		String srcDir = "C:/Users/gaolong/Desktop/laxt";
+		String destDir = "C:/Users/gaolong/Desktop/立案系统替换文件/laxt";
+		String[] filePathArray = {"WEB-INF/classes/com/thunisoft/fy/yyla/YYLALogic.class", 
+				"jsp/ladj/ms/caseEditPage.jsp"};
 		
 		for(String filePath : filePathArray){
 			File from = FileUtils.getFile(srcDir, filePath);

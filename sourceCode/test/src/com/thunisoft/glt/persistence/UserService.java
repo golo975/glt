@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
@@ -14,7 +15,7 @@ public class UserService {
 	@Autowired
 	private UserDao userDao ;
 	
-	public boolean signIn(String username) {
+	public boolean signIn(String username, HibernateTemplate hibernateTemplate) {
 //		int i = userDao.jdbcInsert(username);
 //		int i = userDao.jdbcTemplateInsert(username);
 //		int i = userDao.insertAndGetPK(username);
@@ -29,8 +30,9 @@ public class UserService {
 		int[] updateCounts = userDao.batchUpdate2(list);
 		logger.info(Arrays.toString(updateCounts));
 		 */
-		userDao.batchUpdate_insert();
 		
+//		userDao.batchUpdate_insert();
+		userDao.insertByHibernate(hibernateTemplate);
 //		Integer id = userDao.getUser(1);
 //		System.out.println(id);
 		return true;
