@@ -106,6 +106,8 @@ public class SearchUtils {
 			boolean findedTable = false;
 			boolean findedDb = false;
 			boolean findedPk = false;
+			boolean lookingAtPk = false;
+			
 			for(String line : FileUtils.readLines(mappingFile)){
 				if(line.indexOf("table=") >= 0){
 					String tempTable = StringUtils.substringBetween(StringUtils.substringAfter(line, "table="), "\"");
@@ -124,21 +126,32 @@ public class SearchUtils {
 					}
 				}
 				if(line.indexOf("catalog=") >= 0){
-					db = StringUtils.substringBetween(StringUtils.substringAfter(line, "catalog="), "\"");
+					db = StringUtils.substringBetween(StringUtils.substringAfter(line, "catalog"), "\"");
 					findedDb = true;
 				}
-				if(line.indexOf("<id ") >= 0){
+				if(line.indexOf("<id") >= 0){
 //					### 2014年12月12日  需要增加得到主键的代码
-//					db = StringUtils.substringBetween(StringUtils.substringAfter(line, "catalog="), "\"");
-//					findedDb = true;
+					pk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+					if(StringUtils.isBlank(pk)){
+						lookingAtPk = true;
+					} else {
+						findedPk = true;
+					}
+				} else {
+					if(lookingAtPk){
+						pk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+						if(StringUtils.isNotBlank(pk)){
+							findedPk = true;
+						}
+					}
 				}
 				
-				if(findedTable && findedDb){ // TODO 这里需要在加上findedPk， 最后应该把 hqk 和spk都找到。
+				if(findedTable && findedDb && findedPk){ // TODO 这里需要在加上findedPk， 最后应该把 hqk 和spk都找到。
 					break;
 				}
 			}
-			if(findedTable && findedDb){
-				System.out.println(++i + table + " -- " + db);
+			if(findedTable && findedDb && findedPk){
+				System.out.println(++i + table + " -- " + db + " -- " + pk);
 			} else {
 				System.out.println(original);
 				System.out.println(mappingFile.getAbsolutePath());
