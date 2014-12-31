@@ -11,8 +11,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,11 +19,12 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.thunisoft.glt.bean.User;
 
-//@Repository("userDao")
-public class UserDao extends BaseDao{
+@Repository
+public class UserDao extends BaseDao implements IUserDao{
 
 	private static final Log logger = LogFactory.getLog(UserDao.class);
 	
@@ -135,6 +134,7 @@ public class UserDao extends BaseDao{
 	 * 需要特别注意的是，这里的update并不仅仅包括update操作，也包括inset和delete（即不包括select操作）。
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	public void batchUpdate_insert(){
 		Map<String, String> map1 = new HashMap<String, String>();
 		map1.put("username", "gaolong");

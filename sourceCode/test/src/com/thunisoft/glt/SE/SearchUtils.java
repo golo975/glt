@@ -71,7 +71,7 @@ public class SearchUtils {
 		File result = new File(resultPath);
 		List<String> list = FileUtils.readLines(result);
 		for(String original : list){
-//			System.out.println(s);
+			System.out.println(original);
 			String s = StringUtils.substringBetween(original, "(", ".class,");
 			int index = s.lastIndexOf(".");
 			String packageStr = s.substring(0, index);
@@ -86,12 +86,16 @@ public class SearchUtils {
 				for(String line : FileUtils.readLines(f)){
 					if(line.indexOf("package") > 0 && StringUtils.substringBetween(StringUtils.substringAfter(line, "package"), "\"").equals(packageStr)){
 						isPackageRight = true;
-						break;
+//						break;
 					}
-					if(line.indexOf("s") >= 0){
+					if(line.indexOf("class") > 0 && (packageStr + "." + beanname).equals(StringUtils.substringBetween(StringUtils.substringAfter(line, "name"), "\""))){
 						isPackageRight = true;
-						break;
+//						break;
 					}
+//					if(line.indexOf("s") >= 0){
+//						isPackageRight = true;
+////						break;
+//					}
 				}
 				if(isPackageRight){
 					mappingFile = f;
@@ -102,15 +106,23 @@ public class SearchUtils {
 			// 得到mapping文件中的内容：table， db， PK
 			String table = null;
 			String db = null;
-			String pk = null;
+			String spk = "";
+			String hpk = "";
+			
 			boolean findedTable = false;
 			boolean findedDb = false;
-			boolean findedPk = false;
-			boolean lookingAtPk = false;
+			boolean findedSpk = false;
+			boolean findedHpk = false;
 			
-			for(String line : FileUtils.readLines(mappingFile)){
-				if(line.indexOf("table=") >= 0){
-					String tempTable = StringUtils.substringBetween(StringUtils.substringAfter(line, "table="), "\"");
+			boolean lookingAtPk = false;
+			boolean isCompositeId = false;// 是否是联合主键
+			
+			List<String> ls = FileUtils.readLines(mappingFile);
+			for(String line : ls){
+//				System.out.println(line);
+				// 确定数表名和据库名
+				if(line.indexOf("table") >= 0){
+					String tempTable = StringUtils.substringBetween(StringUtils.substringAfter(line, "table"), "\"");
 					String[] tempArray = tempTable.split("\\.\\.");
 					if(tempArray.length == 1){
 						table = tempArray[0];
@@ -120,42 +132,90 @@ public class SearchUtils {
 						table = tempArray[1];
 						findedDb = true;
 						findedTable = true;
-						break;
+//						System.out.println("glt");
+//						break;
 					} else {
 						throw new RuntimeException("错措错，是我的错！");
 					}
 				}
-				if(line.indexOf("catalog=") >= 0){
+				// 确定数据库名
+				if(line.indexOf("catalog") >= 0){
 					db = StringUtils.substringBetween(StringUtils.substringAfter(line, "catalog"), "\"");
 					findedDb = true;
 				}
-				if(line.indexOf("<id") >= 0){
-//					### 2014年12月12日  需要增加得到主键的代码
-					pk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
-					if(StringUtils.isBlank(pk)){
+				// 确定主键
+				if(line.indexOf("<id") >= 0 || line.indexOf("<composite-id") >= 0){
+//					if(StringUtils.isBlank(spk)){
+						spk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+//					} else {
+//						String _s = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+//						if(StringUtils.isNotBlank(_s)){
+//							spk = spk + "," + _s;
+//						}
+//					}
+						if(line.indexOf("<composite-id") >= 0){
+							isCompositeId = true;
+						}
+						if(!isCompositeId){
+							hpk = StringUtils.substringBetween(StringUtils.substringAfter(line, "name"), "\"");
+						}
+					
+					
+					
+					
+					if(StringUtils.isBlank(spk)){
 						lookingAtPk = true;
-					} else {
-						findedPk = true;
+					}
+					if(line.indexOf("<id") >= 0 && StringUtils.isNotBlank(spk)){
+						findedSpk = true;
 					}
 				} else {
+					if(line.indexOf("</id") >= 0 || line.indexOf("</composite-id") >= 0){
+						lookingAtPk = false;
+						if(StringUtils.isNotBlank(spk)){
+							findedSpk = true;
+						}
+						if(StringUtils.isNotBlank(hpk)){
+							findedHpk = true;
+						}
+					}
 					if(lookingAtPk){
-						pk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
-						if(StringUtils.isNotBlank(pk)){
-							findedPk = true;
+						if(StringUtils.isBlank(spk)){
+							spk = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+						} else {
+							String _s = StringUtils.substringBetween(StringUtils.substringAfter(line, "column"), "\"");
+							if(StringUtils.isNotBlank(_s)){
+								spk = spk + "," + _s;
+							}
+						}
+						
+						if(line.indexOf("<column") < 0){
+							if(StringUtils.isBlank(hpk)){
+								hpk = StringUtils.substringBetween(StringUtils.substringAfter(line, "name"), "\"");
+							}else {
+								String _h = StringUtils.substringBetween(StringUtils.substringAfter(line, "name"), "\"");
+								if(StringUtils.isNotBlank(_h)){
+									hpk = hpk + "," + _h;
+								}
+							}
 						}
 					}
 				}
 				
-				if(findedTable && findedDb && findedPk){ // TODO 这里需要在加上findedPk， 最后应该把 hqk 和spk都找到。
+				// TODO 这里需要在加上findedPk， 最后应该把 hqk 和spk都找到。
+//				System.out.println(findedTable && findedDb && findedPk);
+				if(findedTable && findedDb && findedSpk && findedHpk){ 
 					break;
 				}
 			}
-			if(findedTable && findedDb && findedPk){
-				System.out.println(++i + table + " -- " + db + " -- " + pk);
+			if(findedTable && findedDb && findedSpk && findedHpk){
+//				System.out.println(++i + " -- " + table + " -- " + db + " -- " + spk + " -- " + hpk);
+				++i;
+				System.out.println(String.format(tagTemplate, "0002_" + ((10022 + i) + "").substring(1), table, db, hpk, spk));
 			} else {
-				System.out.println(original);
-				System.out.println(mappingFile.getAbsolutePath());
-				throw new RuntimeException("解析mapping文件失败！");
+//				System.out.println(original);
+//				System.out.println(mappingFile.getAbsolutePath());
+//				throw new RuntimeException("解析mapping文件失败！");
 			}
 			
 			

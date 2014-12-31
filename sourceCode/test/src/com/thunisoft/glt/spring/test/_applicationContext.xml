@@ -35,31 +35,31 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://gltest975.mysql.rds.aliyuncs.com:3306/glt"></property>
-		<property name="username" value="glt975"></property>
-		<property name="password" value="671239137"></property>
-	</bean>
+<!-- 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property> -->
+<!-- 		<property name="url" value="jdbc:mysql://gltest975.mysql.rds.aliyuncs.com:3306/glt"></property> -->
+<!-- 		<property name="username" value="glt975"></property> -->
+<!-- 		<property name="password" value="671239137"></property> -->
+<!-- 	</bean> -->
 	
-	<bean id="userDao" class="com.thunisoft.glt.persistence.UserDao" >
-	    <property name="dataSource">
-	    	<ref bean="dataSource"/>
-	    </property>
-	</bean>
+<!-- 	<bean id="userDao" class="com.thunisoft.glt.persistence.UserDao" > -->
+<!-- 	    <property name="dataSource"> -->
+<!-- 	    	<ref bean="dataSource"/> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mappingResources">
-            <list>
-                <value>com/thunisoft/glt/bean/User.hbm.xml</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <value>
-                hibernate.dialect=org.hibernate.dialect.MySQLDialect
-            </value>
-        </property>
-    </bean>
+<!-- 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> -->
+<!--         <property name="dataSource" ref="dataSource"/> -->
+<!--         <property name="mappingResources"> -->
+<!--             <list> -->
+<!--                 <value>com/thunisoft/glt/bean/User.hbm.xml</value> -->
+<!--             </list> -->
+<!--         </property> -->
+<!--         <property name="hibernateProperties"> -->
+<!--             <value> -->
+<!--                 hibernate.dialect=org.hibernate.dialect.MySQLDialect -->
+<!--             </value> -->
+<!--         </property> -->
+<!--     </bean> -->
 
 </beans>

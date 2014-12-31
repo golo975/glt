@@ -39,9 +39,9 @@ public class LoginController {
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage(), e);
 		}
-//		userService.signIn(username);
+		userService.signIn(username);
 		
-		userService.getUsers();//TODO spring mvc 怎么把数据返回给View层？
+//		userService.getUsers();//TODO spring mvc 怎么把数据返回给View层？
 		return "target";
 	}
 

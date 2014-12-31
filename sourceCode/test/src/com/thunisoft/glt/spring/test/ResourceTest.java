@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 public class ResourceTest {
 
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-		Resource r = new ClassPathResource("com/thunisoft/glt/spring/test/applicationContext.xml");
+		Resource r = new ClassPathResource("com/thunisoft/glt/spring/test/_applicationContext.xml");
 		System.out.println(r.exists());
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
