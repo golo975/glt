@@ -54,9 +54,9 @@
 	</bean>
 	
 	<bean id="userDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<property name="proxyInterfaces">
+		<!-- <property name="proxyInterfaces">
 			<value>com.thunisoft.glt.persistence.IUserDao</value>
-		</property>
+		</property> -->
 		<property name="target">
 			<value>userDao</value>
 		</property>

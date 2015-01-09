@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
+import com.thunisoft.glt.bean.User;
+
 @Service("userService")
 public class UserService {
 
@@ -60,8 +62,7 @@ public class UserService {
 		return true;
 	}
 	
-	public List getUsers(){
-//		return userDao.getUsers();
-		return null;
+	public List<User> getUsers(){
+		return userDao.getUsers();
 	}
 }
