@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -47,52 +48,88 @@
 		<property name="password" value="123456"></property>
 	</bean>
 	
+	<!-- 增强 -->
+	<bean id="myBeforeAdvice" class="com.thunisoft.glt.spring.aop.MyBeforeAdvice"></bean>
+	<!-- 切面：使用自定义的切面类 -->
+	<bean id="nameBeforeAdvisor" class="com.thunisoft.glt.spring.aop.MyAdvisor" >
+		<property name="advice">
+			<ref bean="myBeforeAdvice"/>
+		</property>
+	</bean>
+	
+	<bean id="myPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut" >
+		<property name="mappedNames">
+			<list>
+				<value>batchUpdate_insert</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="myAfterAdvice" class="com.thunisoft.glt.spring.aop.MyAfterAdvice" ></bean>
+	<bean id="myAfterAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor" >
+		<constructor-arg>
+			<ref bean="myPointcut" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="myAfterAdvice" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="myThrowsAdvice" class="" ></bean>
+	
+	
+	
 	<bean id="userDao" class="com.thunisoft.glt.persistence.UserDao" >
 	    <property name="dataSource">
 	    	<ref bean="dataSource"/>
 	    </property>
 	</bean>
 	
-	<bean id="userDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
-		<!-- <property name="proxyInterfaces">
-			<value>com.thunisoft.glt.persistence.IUserDao</value>
-		</property> -->
+	<!-- 手动创建代理织入切面 -->
+	<!-- <bean id="userDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyTargetClass">
+			<description>使用java的自动代理还是使用cglib</description>
+			<value>true</value>
+		</property>
 		<property name="target">
-			<value>userDao</value>
+			<description>织入的对象</description>
+			<ref bean="userDao" />
 		</property>
 		<property name="interceptorNames">
+			<description>被织入的增强</description>
 			<list>
 				<value>nameAdvisor</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 	
-<!-- 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> -->
-<!--         <property name="dataSource" ref="dataSource"/> -->
-<!--         <property name="mappingResources"> -->
-<!--             <list> -->
-<!--                 <value>com/thunisoft/glt/bean/User.hbm.xml</value> -->
-<!--             </list> -->
-<!--         </property> -->
-<!--         <property name="hibernateProperties"> -->
-<!--             <value> -->
-<!--                 hibernate.dialect=org.hibernate.dialect.MySQLDialect -->
-<!--             </value> -->
-<!--         </property> -->
-<!--     </bean> -->
-
-	
-	
-	<bean id="nameAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor" >
-		<property name="mappedName">
-			<value>batchUpdate_insert</value>
+	<!-- 自动生成代理织入切面 -->
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" >
+		<property name="optimize">
+			<value>true</value>
 		</property>
-		<property name="advice">
-			<ref bean="myAdvice" />
+		<!-- 下面的两个参数是不能省的 -->
+		<property name="interceptorNames">
+			<list>
+				<value>nameBeforeAdvisor</value>
+				<value>myAfterAdvisor</value>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>userDao</value>
+			</list>
 		</property>
 	</bean>
 	
-	<bean id="myAdvice" class="com.thunisoft.glt.spring.aop.MyAdvice"  ></bean>
+	<!-- 切面：使用默认类 -->
+<!-- 	<bean id="nameAdvisorSimple" class="org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor" > -->
+<!-- 		<property name="mappedName"> -->
+<!-- 			<value>batchUpdate_insert</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="advice"> -->
+<!-- 			<ref bean="myAdvice" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 	
 	
 </beans>

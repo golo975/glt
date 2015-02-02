@@ -5,7 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestStaticMethodAdvisor {
 	public static void main(String[] args) {
-		String configPath = "com/baobaotao/advisor/beans.xml";
+		String configPath = "com/thunisoft/glt/spring/aop/book/advisor/beans.xml";
+		@SuppressWarnings("resource")
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(configPath);
 		Waiter waiter = (Waiter)ctx.getBean("waiter");
 		Seller seller = (Seller)ctx.getBean("seller");

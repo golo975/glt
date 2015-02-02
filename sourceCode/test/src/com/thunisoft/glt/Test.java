@@ -7,40 +7,50 @@ import static org.apache.commons.lang3.StringUtils.substringBetween;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.aop.Advisor;
-import org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		List<String> scopeList = readLines(new File(
-				"C:/Users/gaolong/Desktop/glt/glt.txt"));
-		for (int i = 0; i < scopeList.size(); i++) {
-			scopeList.set(i, scopeList.get(i) + ".hbm.xml");
-		}
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		Resource[] resourceArray = resolver
-				.getResources("file:D:/MyWorkspace10/fycommon/**/*.hbm.xml");
-		for (Resource r : resourceArray) {
-			if (scopeList.contains(r.getFilename())) {
-				List<String> lines = readLines(r.getFile());
-				for (String s : lines) {
-					if (s.contains("composite-id")) {
-						System.out.println(r.getFilename());
-						break;
-					}
-				}
-			}
-		}
+//		List<String> scopeList = readLines(new File(
+//				"C:/Users/gaolong/Desktop/glt/glt.txt"));
+//		for (int i = 0; i < scopeList.size(); i++) {
+//			scopeList.set(i, scopeList.get(i) + ".hbm.xml");
+//		}
+//		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//		Resource[] resourceArray = resolver
+//				.getResources("file:D:/MyWorkspace10/fycommon/**/*.hbm.xml");
+//		for (Resource r : resourceArray) {
+//			if (scopeList.contains(r.getFilename())) {
+//				List<String> lines = readLines(r.getFile());
+//				for (String s : lines) {
+//					if (s.contains("composite-id")) {
+//						System.out.println(r.getFilename());
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		System.out.println(Test.isEquals("1"));
+		
+//		List<String> list = Arrays.asList(new String[6]);
+//		System.out.println(list.size());
+		
+//		ExecutorService threadPool = Executors.newCachedThreadPool();
+		
+		boolean b = Object.class.isAssignableFrom("a".getClass());
+		System.out.println(b);
 	}
 
 	
@@ -570,8 +580,25 @@ public class Test {
 	
 	@org.junit.Test
 	public void test2() throws IOException{
+//		"repository/eform/视说诉讼/视频申请/其他视频直播申请一级导航.form.xml",
+//		"repository/eform/视说诉讼/视频申请/申请一级导航.form.xml"
+		
+//		"repository/eform/视说诉讼/审核人/其他视频审核二级导航.form.xml",
+//		"repository/eform/视说诉讼/审核人/审核人一级导航.form.xml",
+		
+//		"repository/eform/个人发布/节点公开二级导航.form.xml",
+		
+//		"repository/eform/个人发布/文书公开.form.xml",
+
+//		String filePath = "审核人";
+//		filePath = new String(filePath.getBytes("utf8"), "gbk");
+//		System.out.println(filePath);
 		
 	}
+	private static  <T>boolean isEquals(T target, T...range){
+    	Arrays.sort(range);
+    	return Arrays.binarySearch(range, target) >= 0;
+    }
 	
 
 }

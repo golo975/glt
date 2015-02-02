@@ -36,7 +36,6 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/signin", method = RequestMethod.GET )
 	public ModelAndView login(@RequestParam("username") String username) {
-		System.out.println(username);
 		userService.signIn(username);
 		List<User> users = userService.getUsers();
 		ModelAndView mv = new ModelAndView();

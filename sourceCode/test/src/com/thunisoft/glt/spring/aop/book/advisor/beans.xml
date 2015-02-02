@@ -8,10 +8,10 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- 普通方法名匹配切面 -->
-	<bean id="waiterTarget" class="com.baobaotao.advisor.Waiter" />
-	<bean id="sellerTarget" class="com.baobaotao.advisor.Seller" />
-	<bean id="greetingAdvice" class="com.baobaotao.advisor.GreetingBeforeAdvice" />
-	<bean id="greetingAdvisor" class="com.baobaotao.advisor.GreetingAdvisor"
+	<bean id="waiterTarget" class="com.thunisoft.glt.spring.aop.book.advisor.Waiter" />
+	<bean id="sellerTarget" class="com.thunisoft.glt.spring.aop.book.advisor.Seller" />
+	<bean id="greetingAdvice" class="com.thunisoft.glt.spring.aop.book.advisor.GreetingBeforeAdvice" />
+	<bean id="greetingAdvisor" class="com.thunisoft.glt.spring.aop.book.advisor.GreetingAdvisor"
 		p:advice-ref="greetingAdvice" />
 
 	<bean id="parent" abstract="true"
@@ -39,10 +39,10 @@
 	<!-- 动态切面 -->
 	<bean id="dynamicAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
 		<property name="pointcut">
-			<bean class="com.baobaotao.advisor.GreetingDynamicPointcut" />
+			<bean class="com.thunisoft.glt.spring.aop.book.advisor.GreetingDynamicPointcut" />
 		</property>
 		<property name="advice">
-			<bean class="com.baobaotao.advisor.GreetingBeforeAdvice" />
+			<bean class="com.thunisoft.glt.spring.aop.book.advisor.GreetingBeforeAdvice" />
 		</property>
 	</bean>
 
@@ -54,7 +54,7 @@
 	<!-- 控制流程切面 -->
 	<bean id="controlFlowPointcut" class="org.springframework.aop.support.ControlFlowPointcut">
 		<constructor-arg type="java.lang.Class"
-			value="com.baobaotao.advisor.WaiterDelegate" />
+			value="com.thunisoft.glt.spring.aop.book.advisor.WaiterDelegate" />
 		<constructor-arg type="java.lang.String" value="service" />
 	</bean>
 	<bean id="controlFlowAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor"
@@ -64,7 +64,7 @@
 		p:proxyTargetClass="true" />
 
 	<!-- 复合切点切面 -->
-	<bean id="gcp" class="com.baobaotao.advisor.GreetingComposablePointcut" />
+	<bean id="gcp" class="com.thunisoft.glt.spring.aop.book.advisor.GreetingComposablePointcut" />
 	<bean id="composableAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor"
 		p:pointcut="#{gcp.intersectionPointcut}" p:advice-ref="greetingAdvice" />
 	<bean id="waiter4" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -75,10 +75,10 @@
 	<bean id="introduceAdvisor"
 		class="org.springframework.aop.support.DefaultIntroductionAdvisor">
 		<constructor-arg>
-			<bean class="com.baobaotao.introduce.ControllablePerformaceMonitor" />
+			<bean class="com.thunisoft.glt.spring.aop.book.introduce.ControllablePerformaceMonitor" />
 		</constructor-arg>
 	</bean>
-	<bean id="forumServiceTarget" class="com.baobaotao.introduce.ForumService" />
+	<bean id="forumServiceTarget" class="com.thunisoft.glt.spring.aop.book.introduce.ForumService" />
 	<bean id="forumService" class="org.springframework.aop.framework.ProxyFactoryBean"
 	      p:interceptorNames="introduceAdvisor"
 	      p:target-ref="forumServiceTarget"
