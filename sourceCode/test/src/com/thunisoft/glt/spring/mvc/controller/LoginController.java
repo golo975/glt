@@ -3,6 +3,7 @@ package com.thunisoft.glt.spring.mvc.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.thunisoft.glt.bean.User;
 import com.thunisoft.glt.persistence.UserService;
 
 @Controller
@@ -32,17 +35,13 @@ public class LoginController {
 	 * @RequestParam用来获取请求中的参数。
 	 */
 	@RequestMapping(value = "/signin", method = RequestMethod.GET )
-	public String login(@RequestParam("username") String username) {
-		System.out.println(username);
-		try {
-			System.out.println(new String(username.getBytes("utf8"), "gbk"));
-		} catch (UnsupportedEncodingException e) {
-			logger.error(e.getMessage(), e);
-		}
+	public ModelAndView login(@RequestParam("username") String username) {
 		userService.signIn(username);
-		
-		userService.getUsers();//TODO spring mvc 怎么把数据返回给View层？
-		return "target";
+		List<User> users = userService.getUsers();
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("target");
+		mv.addObject("users", users);
+		return mv;
 	}
 
 	@RequestMapping(value = "/something", method = RequestMethod.GET)

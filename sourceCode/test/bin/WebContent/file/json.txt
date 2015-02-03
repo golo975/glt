@@ -1,0 +1,5 @@
+{"head":{ "sys": "ssfw","action": "pushWorkOrder","service": " workOrderServiceWS"},"param": {"workorder": {"id":"6198","fy": "1","fwbh": "2014京法1007359号","zxryid":"9000604","lflb":"10", "lfnr": "李女士称，我想问一下中级人民法院受理案件的诉讼标的额是多少？","hffs":"1","hfnr":"一、来电诉讼要点：中级人民法院的受理案件的标的额
+
+二、答复内容：告知来电人中级人民法院受理案件的标的额是一亿元以上。
+
+","hfsj":"20141103144432","file":"http://129.0.9.23:80/x/20141103/203/1443310.V3","thsc":"793","lfrxx": {"xm":"李女士","xb":"3","lx": "2","dh1":"68941171","dh2": "","sfzhm":"","email":"","lxdz":""},"ajxx":{"ajlb":"","ah":"","ajbh":"","jbfy": "6","cbspt": "null", "cbr":" "},"clxx": {"clfs": "2","clsj": "20141103145225","zrfy":"","zrts":"","clry":"" }}}}

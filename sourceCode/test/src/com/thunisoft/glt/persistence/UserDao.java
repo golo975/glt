@@ -3,26 +3,31 @@ package com.thunisoft.glt.persistence;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.thunisoft.glt.bean.User;
 
-//@Repository("userDao")
-public class UserDao extends BaseDao{
+@Repository
+public class UserDao extends BaseDao implements IUserDao{
 
 	private static final Log logger = LogFactory.getLog(UserDao.class);
 	
@@ -113,7 +118,7 @@ public class UserDao extends BaseDao{
 	}
 	
 	/**
-	 * 相对使用BatchPreparedStatementSetter的方式，下面这种方式更加简洁，因为需要循环的是整个数组，因此不需要在提供循环的范围了。
+	 * 相对使用BatchPreparedStatementSetter的方式，下面这种方式更加简洁，因为需要循环的是整个数组，因此不需要再提供循环的范围了。
 	 * 当然也可以说这失去了某些灵活性，但是这种所谓的灵活性在大多数情况下是没有什么必要的。
 	 * 需要注意的是，下面这个方法是基于NamedParameterJdbcTemplate的，而上面的方法是基于基本的JdbcTemplate的。
 	 * 如果sql的参数的占位符(placeholder)是传统的?（问号）,就必须保证传入的参数的位置和sql中的参数的位置一一对应。
@@ -132,6 +137,7 @@ public class UserDao extends BaseDao{
 	 * 需要特别注意的是，这里的update并不仅仅包括update操作，也包括inset和delete（即不包括select操作）。
 	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	public void batchUpdate_insert(){
 		Map<String, String> map1 = new HashMap<String, String>();
 		map1.put("username", "gaolong");
@@ -154,4 +160,24 @@ public class UserDao extends BaseDao{
 		return getJdbcTemplate().queryForObject("select id from gltuser where id = ? ", Integer.class, id);
 	}
 	
+	public List<User> getUsers(){
+		String sql = "SELECT * FROM gltuser ";
+		return getJdbcTemplate().query(sql, new RowMapper<User>(){
+			
+			@Override
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setUsername(rs.getString("username"));
+				return user;
+			}
+			
+		});
+	}
+	
+	public void insertByHibernate(HibernateTemplate hibernateTemplate){
+		User user = new User();
+		user.setUsername("hibernate");
+		hibernateTemplate.update(user);
+	}
 }
