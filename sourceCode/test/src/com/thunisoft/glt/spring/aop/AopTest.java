@@ -12,6 +12,6 @@ public class AopTest {
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserDao dao = (UserDao) context.getBean("userDaoProxy");
-		dao.batchUpdate_insert();
+//		dao.batchUpdate_insert();
 	}
 }
