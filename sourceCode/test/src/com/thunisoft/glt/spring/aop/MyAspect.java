@@ -5,8 +5,8 @@ import org.aspectj.lang.annotation.Before;
 
 @Aspect
 public class MyAspect {
-
-	@Before("")
+//	public void batchUpdate_insert()
+	@Before("execution(* com.thunisoft.glt.persistence.UserDao.batchUpdate_insert(..))")
 	public void myBeforeAdvice(){
 		System.out.println("使用注解添加前置增强");
 	}

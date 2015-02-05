@@ -18,4 +18,8 @@ public interface IUserDao {
 	void batchUpdate3();
 	Integer getUser(int id);
 	void insertByHibernate(HibernateTemplate hibernateTemplate);
+	List<User> getUsers();
+	List<User> getUsers(String username);
+	void deleteUser(int id);
+	void insertUser(String name);
 }

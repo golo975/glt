@@ -14,6 +14,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:component-scan base-package="com.thunisoft.glt.spring.mvc.controller" />
 	<context:component-scan base-package="com.thunisoft.glt.persistence" />
+	<context:component-scan base-package="com.thunisoft.glt.spring" />
 	
 	<!--  话说下面这句话是干什么用的？ -->
 	<mvc:annotation-driven />
@@ -134,7 +135,9 @@
 	
 	
 	<!-- 下面使用annotation 的方式实现 AOP -->
-	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
+	<bean id="myAspect" class="com.thunisoft.glt.spring.aop.MyAspect" ></bean>
 	
 	
 </beans>

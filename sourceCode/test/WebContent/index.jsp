@@ -7,11 +7,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-hello world!
+hello world!<br/>
 user sign in 
-<form action="http://localhost:8080/test/signin.do?gender=male">
+<form action="/test/signin.do">
 	username : <input name="username" />
 	<input type="submit" value="注册" />
 </form>
+
+<form action="/test/searchUser.do">
+	username : <input name="username" />
+	<input type="submit" value="查找" />
+</form>
+
 </body>
 </html>
