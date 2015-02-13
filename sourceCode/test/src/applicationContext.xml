@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:component-scan base-package="com.thunisoft.glt.spring.mvc.controller" />
 	<context:component-scan base-package="com.thunisoft.glt.persistence" />
+	<context:component-scan base-package="com.thunisoft.glt.spring" />
+	
+	<!--  话说下面这句话是干什么用的？ -->
 	<mvc:annotation-driven />
 
 	<!-- 这个东西暂时还没有测试成功 -->
+	<!-- 
 	<bean id="handlerMapping"
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="interceptors">
@@ -26,6 +34,7 @@
 		<property name="openingTime" value="9" />
 		<property name="closingTime" value="17" />
 	</bean>
+	 -->
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
@@ -37,10 +46,48 @@
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://gltest975.mysql.rds.aliyuncs.com:3306/glt"></property>
-		<property name="username" value="glt975"></property>
-		<property name="password" value="671239137"></property>
+<!-- 		<property name="url" value="jdbc:mysql://gltest975.mysql.rds.aliyuncs.com:3306/glt"></property> -->
+		<property name="url" value="jdbc:mysql://localhost:9306/gltmaven"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
 	</bean>
+	
+	<!-- <bean id="myBeforeAdvice" class="com.thunisoft.glt.spring.aop.MyBeforeAdvice"></bean>
+	<bean id="nameBeforeAdvisor" class="com.thunisoft.glt.spring.aop.MyAdvisor" >
+		<property name="advice">
+			<ref bean="myBeforeAdvice"/>
+		</property>
+	</bean>
+	
+	<bean id="myPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut" >
+		<property name="mappedNames">
+			<list>
+				<value>batchUpdate_insert</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="myAfterAdvice" class="com.thunisoft.glt.spring.aop.MyAfterAdvice" ></bean>
+	<bean id="myAfterAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor" >
+		<constructor-arg>
+			<ref bean="myPointcut" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="myAfterAdvice" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="myThrowsAdvice" class="com.thunisoft.glt.spring.aop.MyThrowsAdvice" ></bean>
+	<bean id="myThrowsAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor" >
+		<constructor-arg>
+			<ref bean="myPointcut" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="myThrowsAdvice" />
+		</constructor-arg>
+	</bean> -->
+	
+	
 	
 	<bean id="userDao" class="com.thunisoft.glt.persistence.UserDao" >
 	    <property name="dataSource">
@@ -48,5 +95,49 @@
 	    </property>
 	</bean>
 	
-
+	<!-- 手动创建代理织入切面 -->
+	<!-- <bean id="userDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyTargetClass">
+			<description>使用java的自动代理还是使用cglib</description>
+			<value>true</value>
+		</property>
+		<property name="target">
+			<description>织入的对象</description>
+			<ref bean="userDao" />
+		</property>
+		<property name="interceptorNames">
+			<description>被织入的增强</description>
+			<list>
+				<value>nameAdvisor</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!-- 自动生成代理织入切面 -->
+	
+	<!-- <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" >
+		<property name="optimize">
+			<value>true</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>nameBeforeAdvisor</value>
+				<value>myAfterAdvisor</value>
+				<value>myThrowsAdvisor</value>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>userDao</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	
+	<!-- 下面使用annotation 的方式实现 AOP -->
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
+	<bean id="myAspect" class="com.thunisoft.glt.spring.aop.MyAspect" ></bean>
+	
+	
 </beans>

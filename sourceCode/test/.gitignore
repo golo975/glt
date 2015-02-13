@@ -4,3 +4,4 @@
 \.*
 # 但是不要忽略.gitignore文件，即当前文件
 !.gitignore
+/bin/

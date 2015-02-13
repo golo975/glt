@@ -1,7 +1,6 @@
 package com.thunisoft.glt.spring.mvc.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,18 +36,38 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/signin", method = RequestMethod.GET )
 	public ModelAndView login(@RequestParam("username") String username) {
-		userService.signIn(username);
+//		userService.signIn(username);
+		userService.insertUsert(username);
+		return showUserList();
+	}
+	
+	private ModelAndView showUserList(){
 		List<User> users = userService.getUsers();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("target");
 		mv.addObject("users", users);
 		return mv;
 	}
-
+	
 	@RequestMapping(value = "/something", method = RequestMethod.GET)
 	public void handle(@RequestBody String body, Writer writer)
 			throws IOException {
 		logger.info(body);
+	}
+	
+	@RequestMapping(value="/deleteUser")
+	public ModelAndView deleteUser(@RequestParam Integer userid){
+		userService.deleteUser(userid);
+		return showUserList();
+	}
+	
+	@RequestMapping("/searchUser")
+	public ModelAndView searchUser(String username){
+		List<User> users = userService.getUser(username);
+		ModelAndView mv = new ModelAndView("target");
+		
+		mv.addObject("users", users);
+		return mv;
 	}
 
 }

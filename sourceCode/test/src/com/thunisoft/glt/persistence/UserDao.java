@@ -160,6 +160,7 @@ public class UserDao extends BaseDao implements IUserDao{
 		return getJdbcTemplate().queryForObject("select id from gltuser where id = ? ", Integer.class, id);
 	}
 	
+	@Override
 	public List<User> getUsers(){
 		String sql = "SELECT * FROM gltuser ";
 		return getJdbcTemplate().query(sql, new RowMapper<User>(){
@@ -175,9 +176,35 @@ public class UserDao extends BaseDao implements IUserDao{
 		});
 	}
 	
+	@Override
+	public List<User> getUsers(String username) {
+		String sql = "SELECT * FROM gltuser where username = ? ";
+		return getJdbcTemplate().query(sql, new Object[] { username },
+				new RowMapper<User>() {
+					@Override
+					public User mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						User user = new User();
+						user.setId(rs.getInt("id"));
+						user.setUsername(rs.getString("username"));
+						return user;
+					}
+				});
+	}
+	
 	public void insertByHibernate(HibernateTemplate hibernateTemplate){
 		User user = new User();
 		user.setUsername("hibernate");
 		hibernateTemplate.update(user);
+	}
+	
+	@Override
+	public void deleteUser(int id){
+		getJdbcTemplate().update("delete from gltuser where id = ? ", id);
+	}
+	
+	@Override
+	public void insertUser(String name){
+		getJdbcTemplate().update(" insert into gltuser(username) values (?)", name);
 	}
 }
