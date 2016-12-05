@@ -25,6 +25,7 @@ public class RegExpUtils {
 				Assert.assertEquals("click", s);
 			}
 		}
+
 	}
 
 	@Test
