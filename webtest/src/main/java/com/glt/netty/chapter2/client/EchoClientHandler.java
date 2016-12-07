@@ -14,6 +14,7 @@ import io.netty.util.CharsetUtil;
 public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     /**
+     * 当一个连接建立时被调用
      * 当收到链接成功的通知, 发送一条消息
      *
      * @param ctx
@@ -25,7 +26,9 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     /**
+     * 每当收到数据时,这个方法会被调用
      * 打印收到的消息和日志
+     *
      * @param ctx
      * @param in
      * @throws Exception
@@ -37,6 +40,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     /**
      * 发生异常时, 记录错误日志, 关闭Channel
+     *
      * @param ctx
      * @param cause
      * @throws Exception
