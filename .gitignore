@@ -1,1 +1,15 @@
-# .idea/
+.classpath
+.project
+.settings/
+target/
+.checkstyle
+/bin
+/target
+overlays/
+.idea/
+t-admin.iml
+/target
+/META-INF
+atlassian-ide-plugin.xml
+.*
+tag-everything.iml

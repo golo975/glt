@@ -10,6 +10,7 @@
 
     <modules>
         <module>webtest</module>
+        <module>tag-everything</module>
     </modules>
 
     <build>
