@@ -13,3 +13,4 @@ t-admin.iml
 atlassian-ide-plugin.xml
 .*
 tag-everything.iml
+*.iml
