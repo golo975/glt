@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSON;
 import com.gaolong.tageverything.model.tag.Tag;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import org.junit.Assert;
@@ -75,7 +76,7 @@ public class JUnitActionBase {
 
     @Test
     public void handle51Test() {
-        RestTemplate restTemplate = buildRestTemplate();
+        /*RestTemplate restTemplate = buildRestTemplate();
 
         Tag tag = new Tag();
         tag.setId(1);
@@ -91,26 +92,53 @@ public class JUnitActionBase {
         Tag responseTag = responseEntity.getBody();
         Assert.assertNotNull(responseTag);
         Assert.assertEquals(1, responseTag.getId());
-        Assert.assertEquals("test", responseTag.getName());
+        Assert.assertEquals("test", responseTag.getName());*/
+
+    }
+
+    @Test
+    public void handleJsonTest() {
+        RestTemplate restTemplate = buildRestTemplate();
+
+        Tag tag = new Tag();
+        tag.setId(1);
+        tag.setName("test");
+
+//        HttpHeaders entityHeaders = new HttpHeaders();
+//        entityHeaders.setContentType(MediaType.valueOf("application/xml;UTF-8"));
+//        entityHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+
+        HttpHeaders entityHeaders = new HttpHeaders();
+        entityHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        entityHeaders.setContentType(MediaType.valueOf("application/json;UTF-8"));
+
+        HttpEntity<Tag> requestEntity = new HttpEntity<>(tag, entityHeaders);
 
 
+        Tag rs = restTemplate.postForObject("http://localhost:8080/test/postTag", requestEntity, Tag.class);
+        System.out.println(rs);
     }
 
     private RestTemplate buildRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
 
-        XStreamMarshaller xmlMarshaller = new XStreamMarshaller();
+        /*XStreamMarshaller xmlMarshaller = new XStreamMarshaller();
         xmlMarshaller.setStreamDriver(new StaxDriver());
         xmlMarshaller.setAnnotatedClasses(new Class[]{Tag.class});
 
         MarshallingHttpMessageConverter xmlConverter = new MarshallingHttpMessageConverter();
         xmlConverter.setMarshaller(xmlMarshaller);
         xmlConverter.setUnmarshaller(xmlMarshaller);
-        restTemplate.getMessageConverters().add(xmlConverter);
+        restTemplate.getMessageConverters().add(xmlConverter);*/
 
         /*MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
         restTemplate.getMessageConverters().add(jsonConverter);*/
         return restTemplate;
+    }
+
+    public static void main(String[] args) {
+//        JSON.toJSONString()
+//        JSON.parse()
     }
 }
 

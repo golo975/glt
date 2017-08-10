@@ -11,10 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/test")
-public class ControllerTest {
+public class TagController {
 
     @Autowired
     private TagService tagService;
@@ -24,19 +25,22 @@ public class ControllerTest {
         return "index";
     }
 
-    @RequestMapping(value = "/handle41")
-    public String handle41(@RequestBody String requestBody) {
-        System.out.println(requestBody);
-        return "success";
+    @RequestMapping("/getTag")
+    @ResponseBody
+    public Tag getUser(Tag tag){
+        System.out.println(tag);
+        return tag;
     }
 
-    @RequestMapping("/handle51")
-    public ResponseEntity<Tag> handle51(HttpEntity<Tag> requestEntity) {
-        Tag tag = requestEntity.getBody();
-        tag.setId(1);
-        tag.setName("test");
-        return new ResponseEntity<>(tag, HttpStatus.OK);
-    }
+    @RequestMapping("/postTag")
+    @ResponseBody
+    public Tag postUser(@RequestBody Tag tag){
+        System.out.println(tag);
 
+        Tag rs = new Tag();
+        rs.setId(2);
+        rs.setName("test2");
+        return rs;
+    }
 
 }
