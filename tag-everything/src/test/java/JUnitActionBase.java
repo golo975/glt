@@ -1,27 +1,14 @@
 import com.gaolong.tageverything.model.tag.Tag;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.*;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.oxm.xstream.XStreamMarshaller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
-import org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 
 public class JUnitActionBase {
@@ -92,7 +79,6 @@ public class JUnitActionBase {
         Assert.assertNotNull(responseTag);
         Assert.assertEquals(1, responseTag.getId());
         Assert.assertEquals("test", responseTag.getName());
-
 
     }
 
