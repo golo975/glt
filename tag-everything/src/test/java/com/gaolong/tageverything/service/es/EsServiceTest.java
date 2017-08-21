@@ -137,4 +137,9 @@ public class EsServiceTest {
         System.out.println(updateResponse);
     }
 
+    @Test
+    public void bulkTest() {
+        esService.bulk(client);
+    }
+
 }

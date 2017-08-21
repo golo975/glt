@@ -13,4 +13,5 @@ t-admin.iml
 atlassian-ide-plugin.xml
 .*
 tag-everything.iml
+webtest.iml
 *.iml

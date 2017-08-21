@@ -7,6 +7,8 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 
+import java.io.IOException;
+
 public interface EsService {
     IndexResponse index(TransportClient client);
 
@@ -19,4 +21,16 @@ public interface EsService {
     void deleteByQueryAsync(TransportClient client);
 
     UpdateResponse update(TransportClient client);
+
+    void prepareUpdateByScript(TransportClient client);
+
+    void prepareUpdateByMergingDocument(TransportClient client);
+
+    UpdateResponse upsert(TransportClient client);
+
+    void multiGet(TransportClient client);
+
+    void bulk(TransportClient client);
+
+    void bulkProcess(TransportClient client) throws IOException, InterruptedException;
 }
