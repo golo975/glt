@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:application.xml", "classpath:application.xml"})
@@ -140,6 +141,16 @@ public class EsServiceTest {
     @Test
     public void bulkTest() {
         esService.bulk(client);
+    }
+
+    @Test
+    public void bucketAggregationsTest() {
+        try {
+            esService.bucketAggregations(client);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

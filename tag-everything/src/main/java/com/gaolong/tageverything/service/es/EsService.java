@@ -8,6 +8,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public interface EsService {
     IndexResponse index(TransportClient client);
@@ -33,4 +34,6 @@ public interface EsService {
     void bulk(TransportClient client);
 
     void bulkProcess(TransportClient client) throws IOException, InterruptedException;
+
+    void bucketAggregations(TransportClient client) throws ExecutionException, InterruptedException;
 }
