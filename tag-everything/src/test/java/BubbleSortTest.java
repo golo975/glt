@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Administrator on 2017/8/19.
+ * stable sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。
+ * unstable sort：选择排序(5 8 5 2 9)、快速排序、堆排序。
  */
 public class BubbleSortTest {
     @Test
