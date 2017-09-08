@@ -25,6 +25,7 @@ import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -71,31 +72,25 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-
 /**
  * https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-search-msearch.html
  */
 @Service
 public class EsServiceImpl implements EsService {
 
-    Log logger = LogFactory.getLog(EsServiceImpl.class);
+    private Log logger = LogFactory.getLog(EsServiceImpl.class);
 
     public IndexResponse index(TransportClient client) {
         try {
-            XContentBuilder sourceBuilder = jsonBuilder()
+            XContentBuilder sourceBuilder = XContentFactory.jsonBuilder()
                     .startObject()
                     .field("user", "kimchy")
                     .field("postDate", new Date())
                     .field("message", "trying out Elasticsearch")
-//                    .field("gender", "female")
                     .endObject();
 
             // IndexRequestBuilder 用于向ES中插入数据
-            IndexRequestBuilder indexRequestBuilder = client
-                    .prepareIndex("twitter", "tweet", "1")// 根据 index, type, id 3个参数来插入数据
-//                    .prepareIndex("persons", "tweet", "2")// 根据 index, type, id 3个参数来插入数据
+            IndexRequestBuilder indexRequestBuilder = client.prepareIndex("twitter", "tweet", "1")
                     .setSource(sourceBuilder);// setSource() 方法用于插入数据
 
             // IndexResponse 是 index 方法的返回值
@@ -109,8 +104,7 @@ public class EsServiceImpl implements EsService {
 
     @Override
     public GetResponse getDocumentById(TransportClient client) {
-        GetRequestBuilder getRequestBuilder = client.prepareGet("twitter", "tweet", "1")// 根据 index, type, id 3个参数来查找数据
-//        GetRequestBuilder getRequestBuilder = client.prepareGet("persons", "tweet", "1")// 根据 index, type, id 3个参数来查找数据
+        GetRequestBuilder getRequestBuilder = client.prepareGet("twitter", "tweet", "1")
                 .setOperationThreaded(false);//true:执行线程与调用线程不同；false:执行线程与调用线程相同。默认为true，即不同。
         GetResponse response = getRequestBuilder.get();
         return response;// get() 方法的返回值是 GetResponse
@@ -118,11 +112,12 @@ public class EsServiceImpl implements EsService {
 
     @Override
     public DeleteResponse delete(TransportClient client) {
-        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete("twitter", "tweet", "1");// 根据 index, type, id 3个参数来删除数据
+        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete("twitter", "tweet", "1");
         DeleteResponse response = deleteRequestBuilder.get();
         return response;
     }
 
+    // TODO: 2017/8/27 这个方法还没有弄明白
     @Override
     public BulkByScrollResponse deleteByQuery(TransportClient client) {
         DeleteByQueryAction deleteByQueryAction = DeleteByQueryAction.INSTANCE;
@@ -131,7 +126,6 @@ public class EsServiceImpl implements EsService {
                 .filter(QueryBuilders.matchQuery("gender", "male"))// 查询条件是gender==male
                 .source("persons");//所查询的index
 
-        // 如果index（即上面的persons）不存在，执行时会报错
         BulkByScrollResponse bulkByScrollResponse = deleteByQueryRequestBuilder.get();
         long deleted = bulkByScrollResponse.getDeleted();//删除的数据量
         return bulkByScrollResponse;
@@ -174,8 +168,9 @@ public class EsServiceImpl implements EsService {
             UpdateRequest updateRequest = new UpdateRequest()
                     // 经验证，如果原对象根据（index, type, id）查找不存在，则更新操作会报错
                     .index("persons").type("tweet").id("2")
-                    .doc(jsonBuilder().startObject().field("gender", "male").endObject());
+                    .doc(XContentFactory.jsonBuilder().startObject().field("gender", "male").endObject());
 
+            // TODO: 2017/8/27 直接使用update()和使用prepareUpdate() 有什么区别？
             UpdateResponse updateResponse = client.update(updateRequest).get();
             return updateResponse;
         } catch (IOException | InterruptedException | ExecutionException e) {
@@ -199,11 +194,7 @@ public class EsServiceImpl implements EsService {
     public void prepareUpdateByMergingDocument(TransportClient client) {
         try {
             UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")
-                    .doc(jsonBuilder()
-                            .startObject()
-                            .field("gender", "male")
-                            .endObject());
-
+                    .doc(XContentFactory.jsonBuilder().startObject().field("gender", "male").endObject());
             client.update(updateRequest).get();
         } catch (InterruptedException | ExecutionException | IOException e) {
             e.printStackTrace();
@@ -218,19 +209,17 @@ public class EsServiceImpl implements EsService {
     @Override
     public UpdateResponse upsert(TransportClient client) {
         try {
+            // 1. 如果指定的Document不存在，则插入indexRequest中的内容
             IndexRequest indexRequest = new IndexRequest("index", "type", "1")
-                    .source(jsonBuilder()
+                    .source(XContentFactory.jsonBuilder()
                             .startObject()
-                            .field("name", "Joe Smith")
-                            .field("gender", "male")
+                            .field("name", "Joe Smith").field("gender", "male")
                             .endObject());
 
             UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")
-                    .doc(jsonBuilder()// 1. 如果指定的Document已经存在，就根据doc()方法指定的数据进行更新
-                            .startObject()
-                            .field("gender", "male")
-                            .endObject())
-                    .upsert(indexRequest);// 2. 如果指定的Document不存在，则插入indexRequest中的内容
+                    // 2. 如果指定的Document已经存在，就根据doc()方法指定的数据进行更新
+                    .doc(XContentFactory.jsonBuilder().startObject().field("gender", "male").endObject())
+                    .upsert(indexRequest);
 
             UpdateResponse updateResponse = client.update(updateRequest).get();
             return updateResponse;
@@ -261,26 +250,24 @@ public class EsServiceImpl implements EsService {
     public void bulk(TransportClient client) {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
-// either use client#prepare, or use Requests# to directly build index/delete requests
+        // either use client#prepare, or use Requests# to directly build index/delete requests
         try {
             bulkRequest.add(client.prepareIndex("twitter", "tweet", "1")
-                    .setSource(jsonBuilder()
+                    .setSource(XContentFactory.jsonBuilder()
                             .startObject()
                             .field("user", "kimchy")
                             .field("postDate", new Date())
                             .field("message", "trying out Elasticsearch")
-                            .endObject()
-                    )
+                            .endObject())
             );
 
             bulkRequest.add(client.prepareIndex("twitter", "tweet", "2")
-                    .setSource(jsonBuilder()
+                    .setSource(XContentFactory.jsonBuilder()
                             .startObject()
                             .field("user", "kimchy")
                             .field("postDate", new Date())
                             .field("message", "another post")
-                            .endObject()
-                    )
+                            .endObject())
             );
 
             BulkResponse bulkResponse = bulkRequest.get();
@@ -341,7 +328,7 @@ public class EsServiceImpl implements EsService {
                 .build();
 
         bulkProcessor.add(new IndexRequest("twitter", "tweet", "1")
-                .source(jsonBuilder().startObject().endObject()));
+                .source(XContentFactory.jsonBuilder().startObject().endObject()));
         bulkProcessor.add(new DeleteRequest("twitter", "tweet", "2"));
 
         bulkProcessor.awaitClose(10, TimeUnit.MINUTES);
@@ -357,7 +344,7 @@ public class EsServiceImpl implements EsService {
         client.prepareSearch("index1", "index2")
                 .setTypes("type1", "type2")
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(termQuery("multi", "test"))
+                .setQuery(QueryBuilders.termQuery("multi", "test"))
                 .setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18))
                 .setFrom(0).setSize(60).setExplain(true)
                 .get();
@@ -664,7 +651,7 @@ public class EsServiceImpl implements EsService {
 
     // **************  下面是 Query DSL 部分 ****************
 
-    /**
+    /*
      * Elasticsearch provides a full Java query dsl in a similar manner to the REST Query DSL.
      * The factory for query builders is QueryBuilders.
      * Once your query is ready, you can use the Search API :
@@ -686,8 +673,15 @@ public class EsServiceImpl implements EsService {
         MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
     }
 
+    /**
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-full-text-queries.html
+     * 暂略。。。。。
+     *
+     * @param client
+     */
     public void fullTextQueries(TransportClient client) {
 
     }
+
 
 }
