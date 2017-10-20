@@ -2,6 +2,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,6 +27,19 @@ public class Java8StreamTest {
         // 3. 从Stream得到list
         List<Integer> filterList = filterStream.collect(Collectors.toList());
         System.out.println(filterList);
+    }
+    
+    @Test
+    public void ScopeTest() {
+        Person p1 = new Person(1, "p1");
+        Person p2 = new Person(2, "p2");
+        List<Person> list = Arrays.asList(p1, p2);
+        Map<String, Person> map = new HashMap<>();
+
+        System.out.println(map);
+        Consumer<Person> consumer = person -> map.put(person.getName(), person);
+        list.forEach(consumer);
+        System.out.println(map);
     }
 
     @Test
