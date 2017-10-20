@@ -179,6 +179,38 @@ public class EsServiceImpl implements EsService {
         return null;
     }
 
+    /**
+     * 更新或插入
+     *
+     * @param client
+     */
+    @Override
+    public UpdateResponse upsert(TransportClient client) {
+        try {
+            // 1. 如果指定的Document不存在，则插入indexRequest中的内容
+            IndexRequest indexRequest = new IndexRequest("index", "type", "1")
+                    .source(XContentFactory.jsonBuilder()
+                            .startObject()
+                            .field("name", "Joe Smith")
+                            .field("gender", "male")
+                            .endObject());
+
+            UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")
+                    // 2. 如果指定的Document已经存在，就根据doc()方法指定的数据进行更新
+                    .doc(XContentFactory.jsonBuilder()
+                            .startObject()
+                            .field("gender", "male")
+                            .endObject())
+                    .upsert(indexRequest);
+
+            UpdateResponse updateResponse = client.update(updateRequest).get();
+            return updateResponse;
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void prepareUpdateByScript(TransportClient client) {
         UpdateRequest updateRequest = new UpdateRequest("ttl", "doc", "1")
@@ -199,34 +231,6 @@ public class EsServiceImpl implements EsService {
         } catch (InterruptedException | ExecutionException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 更新或插入
-     *
-     * @param client
-     */
-    @Override
-    public UpdateResponse upsert(TransportClient client) {
-        try {
-            // 1. 如果指定的Document不存在，则插入indexRequest中的内容
-            IndexRequest indexRequest = new IndexRequest("index", "type", "1")
-                    .source(XContentFactory.jsonBuilder()
-                            .startObject()
-                            .field("name", "Joe Smith").field("gender", "male")
-                            .endObject());
-
-            UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")
-                    // 2. 如果指定的Document已经存在，就根据doc()方法指定的数据进行更新
-                    .doc(XContentFactory.jsonBuilder().startObject().field("gender", "male").endObject())
-                    .upsert(indexRequest);
-
-            UpdateResponse updateResponse = client.update(updateRequest).get();
-            return updateResponse;
-        } catch (IOException | InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -344,9 +348,16 @@ public class EsServiceImpl implements EsService {
         client.prepareSearch("index1", "index2")
                 .setTypes("type1", "type2")
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.termQuery("multi", "test"))
-                .setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18))
-                .setFrom(0).setSize(60).setExplain(true)
+                .setQuery(
+                        QueryBuilders.termQuery("multi", "test"))
+                .setPostFilter(
+                        QueryBuilders
+                                .rangeQuery("age")
+                                .from(12)
+                                .to(18))
+                .setFrom(0)
+                .setSize(60)
+                .setExplain(true)
                 .get();
 
     }
@@ -383,7 +394,7 @@ public class EsServiceImpl implements EsService {
             }
             scrollResp = client
                     .prepareSearchScroll(scrollResp.getScrollId())
-                    .setScroll(new TimeValue(60000))
+                    .setScroll(new TimeValue(60_000))
                     .execute()
                     .actionGet();
         }

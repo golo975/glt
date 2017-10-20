@@ -4,12 +4,12 @@ import java.sql.SQLException;
 
 public class ForumService {
 	public void removeForum(int forumId) {
-		// do sth...
-		throw new RuntimeException("ÔËÐÐÒì³£¡£");
+		// bean sth...
+		throw new RuntimeException("ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
 	}
 	public void updateForum(Forum forum) throws Exception{
-		// do sth...
-		throw new SQLException("Êý¾Ý¸üÐÂ²Ù×÷Òì³£¡£");
+		// bean sth...
+		throw new SQLException("ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½Â²ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
 		
 	}
 }
