@@ -1,7 +1,0 @@
-/target/
-## 参考 : http://blog.csdn.net/shanliangliuxing/article/details/8598040
-## 忽略所有以.开头的文件夹
-\.*
-# 但是不要忽略.gitignore文件，即当前文件
-!.gitignore
-/bin/
