@@ -13,6 +13,7 @@
         <module>tag-everything</module>
         <module>util-kafka</module>
         <module>girl</module>
+        <module>spring-data-jpa</module>
     </modules>
 
     <build>
