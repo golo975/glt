@@ -4,6 +4,7 @@ import com.glt.util.kafka.consumer.callback.ConsumerCallback;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -33,7 +34,8 @@ public class ExecutorConfig {
         if (threadNums != null) {
             threadNums = 1;
         }
-        this.topicExecutor = Executors.newFixedThreadPool(threadNums);// 一个线程池
+        // 一个线程池
+        this.topicExecutor = Executors.newFixedThreadPool(threadNums);
     }
 
     // ========== getter & setter ==========

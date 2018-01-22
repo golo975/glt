@@ -13,9 +13,9 @@ public class RegExpUtils {
 
 	private String[] strArray = { "boot", "foob", "food", "click" };
 
+	// Pattern p = Pattern.compile("^(?!(oo)).*$");
+	Pattern p = Pattern.compile("(?!.*(oo)).*");
 	public void exclude() {
-		// Pattern p = Pattern.compile("^(?!(oo)).*$");
-		Pattern p = Pattern.compile("(?!.*(oo)).*");
 		Matcher m = null;
 		for (String s : strArray) {
 			m = p.matcher(s);

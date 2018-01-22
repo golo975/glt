@@ -1,25 +1,33 @@
 package com.gaolong.tageverything.dao.tag;
 
-import com.gaolong.tageverything.bean.DO.Tag;
+import com.gaolong.tageverything.model.tag.Tag;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-        "classpath:application.xml",
-        "classpath:application-mvc.xml"})
+@SpringBootTest
 public class TagDaoTest {
 
     @Autowired
     private TagDao tagDao;
 
+
     @Test
-    public void saveTest() {
+    public void addTest() {
         Tag tag = new Tag();
-        tag.setName("gaolong");
-        tagDao.save(tag);
+        tag.setName("test");
+        tag.setCreateTime(System.currentTimeMillis());
+        Long id = tagDao.save(tag);
+        System.out.println(id);
+    }
+
+    @Test
+    public void getByIdTest() {
+        Tag tag = tagDao.getById(2L);
+        System.out.println(tag);
     }
 }

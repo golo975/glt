@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS content;
+CREATE TABLE content(
+  id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+  type_id INT NOT NULL COMMENT "{1:book, 2:artical}"
+)
