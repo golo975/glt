@@ -14,6 +14,7 @@
         <module>util-kafka</module>
         <module>girl</module>
         <module>spring-data-jpa</module>
+        <module>rocket-mq</module>
     </modules>
 
     <build>
