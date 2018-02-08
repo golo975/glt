@@ -15,6 +15,9 @@
         <module>girl</module>
         <module>spring-data-jpa</module>
         <module>rocket-mq</module>
+        <module>spring-cloud-eureka-server</module>
+        <module>spring-cloud-eureka-client</module>
+        <module>service-ribbon</module>
     </modules>
 
     <build>
