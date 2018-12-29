@@ -12,7 +12,8 @@
         <module>webtest</module>
         <module>tag-everything</module>
         <module>util-kafka</module>
-        <module>girl</module>
+        <!--<module>girl</module>-->
+        <module>spring-web-layer-test</module>
     </modules>
 
     <build>
