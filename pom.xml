@@ -8,6 +8,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <moduleName>web1</moduleName>
+    </properties>
+
     <dependencies>
         <!--<dependency>-->
             <!--<groupId>org.springframework</groupId>-->
@@ -47,8 +52,8 @@
         <!--<module>util-kafka</module>-->
         <!--<module>girl</module>-->
         <!--<module>spring-web-layer-test</module>-->
-        <module>web1</module>
-        <module>web2</module>
+        <!--<module>web1</module>-->
+        <!--<module>web2</module>-->
     </modules>
 
     <build>
