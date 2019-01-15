@@ -54,6 +54,7 @@
         <!--<module>spring-web-layer-test</module>-->
         <!--<module>web1</module>-->
         <!--<module>web2</module>-->
+        <module>${moduleName}</module>
     </modules>
 
     <build>
