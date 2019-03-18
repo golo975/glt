@@ -6,7 +6,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+//import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class EsServiceTest {
     @Before
     public void initClient() throws UnknownHostException {
         client = new PreBuiltTransportClient(Settings.EMPTY)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+                .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300));
     }
 
 

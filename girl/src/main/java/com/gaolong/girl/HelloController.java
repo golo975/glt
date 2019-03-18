@@ -14,4 +14,8 @@ public class HelloController {
     public String say() {
         return "Hello Spring Boot!";
     }
+
+    public static void main(String[] args) {
+        System.out.println("Hello World! ");
+    }
 }
