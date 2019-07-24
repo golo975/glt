@@ -56,7 +56,7 @@ public class ObjectsTest {
 
             for (int i = 0; i < 10; i++) {
                 threadPool.submit(() -> {
-
+                    // todo
                 });
             }
         } catch (IOException e) {
