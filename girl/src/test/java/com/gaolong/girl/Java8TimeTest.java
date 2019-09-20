@@ -9,8 +9,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
 
 public class Java8TimeTest {
 
@@ -32,7 +33,6 @@ public class Java8TimeTest {
                 }));
         System.out.println(collect);
     }
-
 
 
     @Test
@@ -58,5 +58,11 @@ public class Java8TimeTest {
         Date.from(instant);
 
 
+    }
+
+    @Test
+    public void collectorsTest() {
+        Map<Integer, Integer> stringMap = Stream.of("a", "b", "aa", "bb", "cc").collect(groupingBy(String::length, collectingAndThen(toList(), List::size)));
+        System.out.println(stringMap);
     }
 }

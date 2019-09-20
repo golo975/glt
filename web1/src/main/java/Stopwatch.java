@@ -1,5 +1,6 @@
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -95,9 +96,11 @@ public class Stopwatch {
 
         @Override
         public String toString() {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter dateTimeFormatter1 = dateTimeFormatter.withZone(ZoneId.systemDefault());
             return new StringJoiner(", ", StopwatchInstant.class.getSimpleName() + "[", "]")
                     .add("name='" + name + "'")
-                    .add("instant=" + DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.ofHours(8)).format(instant))
+                    .add("instant=" + dateTimeFormatter1.format(instant))
                     .toString();
         }
     }
