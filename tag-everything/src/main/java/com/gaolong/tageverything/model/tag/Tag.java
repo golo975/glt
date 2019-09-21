@@ -1,14 +1,16 @@
 package com.gaolong.tageverything.model.tag;
 
 public class Tag {
-    private int id;
-    private String name;
 
-    public int getId() {
+    private Long id;
+    private String name;
+    private Long createTime;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -20,8 +22,40 @@ public class Tag {
         this.name = name;
     }
 
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        if (id != null ? !id.equals(tag.id) : tag.id != null) return false;
+        if (name != null ? !name.equals(tag.name) : tag.name != null) return false;
+        return createTime != null ? createTime.equals(tag.createTime) : tag.createTime == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "Tag: " + "id=" + id + ", name=" + name;
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createTime=" + createTime +
+                '}';
     }
 }

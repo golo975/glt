@@ -13,12 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * @author gaolong
+ */
 @Controller
 @RequestMapping("/test")
 public class TagController {
 
+    private final TagService tagService;
+
     @Autowired
-    private TagService tagService;
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(Model model) {
@@ -38,7 +45,7 @@ public class TagController {
         System.out.println(tag);
 
         Tag rs = new Tag();
-        rs.setId(2);
+        rs.setId(2L);
         rs.setName("test2");
         return rs;
     }
