@@ -1,12 +1,12 @@
-package com.gaolong.tageverything.nio.bio;
+package com.gaolong.tageverything.nio.bio2;
+
+import com.gaolong.tageverything.nio.bio.TimeServerHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
 
 public class TimeServer {
-
     public static void main(String[] args) throws IOException {
         int port = 8080;
         if (args != null && args.length > 0) {
@@ -19,11 +19,13 @@ public class TimeServer {
         ServerSocket server = null;
         try {
             server = new ServerSocket(port);
-            System.out.println("The time server is start in port: " + port);
+            System.out.println("The time server is start in port : " + port);
+
             Socket socket;
+            TimeServerHandlerExecutePool singleExecutor = new TimeServerHandlerExecutePool(50, 10000);
             while (true) {
-                socket = server.accept();// 监听，直至创建连接
-                new Thread(new TimeServerHandler(socket)).start();
+                socket = server.accept();
+                singleExecutor.execute(new TimeServerHandler(socket));
             }
         } finally {
             if (server != null) {
@@ -32,5 +34,4 @@ public class TimeServer {
             }
         }
     }
-
 }

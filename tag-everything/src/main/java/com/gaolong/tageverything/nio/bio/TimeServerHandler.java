@@ -21,33 +21,29 @@ public class TimeServerHandler implements Runnable {
         BufferedReader in = null;
         PrintWriter out = null;
         try {
-//            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            String currentTime = null;
-            String body = null;
-//            while (true) {
-//                body = in.readLine();
-//                if (body == null) {
-//                    break;
-//                }
-//                System.out.println("The time server receive order : " + body);
-//                currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "BAD ORDER";
-//                out.println(currentTime);
-//            }
-            TimeUnit.SECONDS.sleep(10);
-            out.print("I am can not accept anything.");
-            TimeUnit.SECONDS.sleep(10);
+            String currentTime;
+            String body;
+            while (true) {
+                body = in.readLine();
+                if (body == null) {
+                    break;
+                }
+                System.out.println("The time server receive order : " + body);
+                currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "BAD ORDER";
+                out.println(currentTime);
+            }
         } catch (Exception e) {
-//            if (in != null) {
-//                try {
-//                    in.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
             if (out != null) {
                 out.close();
-                out = null;
             }
             if (socket != null) {
                 try {
@@ -56,7 +52,6 @@ public class TimeServerHandler implements Runnable {
                     e1.printStackTrace();
                 }
                 socket = null;
-
             }
         }
     }

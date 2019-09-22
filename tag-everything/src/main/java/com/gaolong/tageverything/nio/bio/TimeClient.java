@@ -23,12 +23,10 @@ public class TimeClient {
         try {
             socket = new Socket("127.0.0.1", port);// 创建并连接
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-//            out = new PrintWriter(socket.getOutputStream(), true);
-//            out.println("QUERY TIME ORDER");
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("QUERY TIME ORDER");
 
             System.out.println("Send order 2 server succeed");
-            TimeUnit.SECONDS.sleep(25);
             String resp = in.readLine();
             System.out.println("Now is : " + resp);
         } catch (Exception e) {
