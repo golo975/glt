@@ -1,10 +1,6 @@
 package com.gaolong.tageverything.nio.aio;
 
-import org.bson.ByteBuf;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -58,7 +54,7 @@ public class AsyncTimeClientHandler implements CompletionHandler<Void, AsyncTime
                     client.write(attachment, attachment, this);
                 } else {
                     ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-                    client.read(attachment, attachment, new CompletionHandler<Integer, ByteBuffer>() {
+                    client.read(readBuffer, readBuffer, new CompletionHandler<Integer, ByteBuffer>() {
                         @Override
                         public void completed(Integer result, ByteBuffer attachment) {// todo 这里的两个 result 和 attachment 为什么不会冲突？
                             attachment.flip();
