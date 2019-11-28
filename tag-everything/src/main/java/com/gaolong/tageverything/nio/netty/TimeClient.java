@@ -16,7 +16,8 @@ public class TimeClient {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
-            b.group(group).channel(NioSocketChannel.class)
+            b.group(group)
+                    .channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -36,6 +37,12 @@ public class TimeClient {
         }
     }
 
+    /*
+运行时，需要在 vm option 中增加一下配置：
+--add-opens
+java.base/jdk.internal.misc=ALL-UNNAMED
+-Dio.netty.tryReflectionSetAccessible=true
+     */
     public static void main(String[] args) throws Exception {
         int port = 8080;
         if (args != null && args.length > 0) {
