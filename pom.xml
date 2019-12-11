@@ -10,10 +10,11 @@
 
     <modules>
 <!--        <module>tag-everything</module>-->
-        <module>dubbo-test-api</module>
-        <module>media-util-common</module>
-        <module>media-util-executor</module>
-        <module>media-util-kafka</module>
+<!--        <module>dubbo-test-api</module>-->
+
+<!--        <module>media-util-common</module>-->
+<!--        <module>media-util-executor</module>-->
+<!--        <module>media-util-kafka</module>-->
     </modules>
 
     <properties>
