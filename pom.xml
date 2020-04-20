@@ -11,6 +11,7 @@
     <modules>
         <module>tag-everything</module>
         <module>spring-boot-demo-1</module>
+        <module>spring-boot-dubbo-demo-1</module>
     </modules>
 
     <properties>

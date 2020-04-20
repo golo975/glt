@@ -1,0 +1,13 @@
+package com.gaolong.springbootdubbodemo1;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringBootDubboDemo1Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootDubboDemo1Application.class, args);
+    }
+
+}
