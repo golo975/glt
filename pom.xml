@@ -10,11 +10,8 @@
 
     <modules>
         <module>tag-everything</module>
-<!--        <module>dubbo-test-api</module>-->
-
-<!--        <module>media-util-common</module>-->
-<!--        <module>media-util-executor</module>-->
-<!--        <module>media-util-kafka</module>-->
+        <module>spring-boot-demo-1</module>
+        <module>spring-boot-dubbo-demo-1</module>
     </modules>
 
     <properties>

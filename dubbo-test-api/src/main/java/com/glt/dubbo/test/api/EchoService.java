@@ -4,4 +4,6 @@ public interface EchoService {
 
     String echo(String message);
 
+    String echo2(String message);
+
 }

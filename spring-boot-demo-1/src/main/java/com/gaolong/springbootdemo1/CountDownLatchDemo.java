@@ -24,7 +24,7 @@ public class CountDownLatchDemo {
 
         Random random = new Random(System.currentTimeMillis());
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             // Latch: 门闩，插销
             CountDownLatch latch = new CountDownLatch(3);
 
