@@ -3,7 +3,6 @@ package com.gaolong.springbootdemo1;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantLockDemo {
@@ -53,8 +52,13 @@ public class ReentrantLockDemo {
             }
         }
 
-        public int getCount() {
-            return count;
+        public int getCount() {// TODO 这个方法需要加锁吗 ？ 如果不加锁的话，可以用 volatile 关键字代替 （ ？）
+            reentrantLock.lock();
+            try {
+                return count;
+            } finally {
+                reentrantLock.unlock();
+            }
         }
     }
 }

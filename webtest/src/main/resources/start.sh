@@ -1,1 +1,0 @@
-nohup bin/flume-ng agent -c conf -f conf/simple.conf --name agent &
