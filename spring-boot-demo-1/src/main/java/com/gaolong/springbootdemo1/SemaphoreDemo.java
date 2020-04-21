@@ -68,11 +68,11 @@ public class SemaphoreDemo {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
+                // release()之前并不要求已经执行过acquire(), 所以正确使用 semaphore 依赖于在开发时使用正确的惯用法
                 semaphore.release();
                 System.out.println("顾客" + consumerNo + "完成办理 - over");
             }
         }
     }
-
 
 }
