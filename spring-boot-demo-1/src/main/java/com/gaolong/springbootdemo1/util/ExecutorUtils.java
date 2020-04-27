@@ -31,4 +31,12 @@ public class ExecutorUtils {
             e.printStackTrace();
         }
     }
+
+    public static void sleep(int t, TimeUnit u) {
+        try {
+            u.sleep(t);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

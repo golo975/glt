@@ -25,11 +25,11 @@ public class CompletableFutureDemo {
         //任务2：洗茶壶->洗茶杯->拿茶叶
         CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> {
             System.out.println("T2:洗茶壶...");
-            sleep(1, TimeUnit.SECONDS);
+            ExecutorUtils.sleep(1, TimeUnit.SECONDS);
             System.out.println("T2:洗茶杯...");
-            sleep(2, TimeUnit.SECONDS);
+            ExecutorUtils.sleep(2, TimeUnit.SECONDS);
             System.out.println("T2:拿茶叶...");
-            sleep(1, TimeUnit.SECONDS);
+            ExecutorUtils.sleep(1, TimeUnit.SECONDS);
             return "龙井";
         });
 
@@ -100,6 +100,7 @@ public class CompletableFutureDemo {
 
         // todo ----------------------------------------------------------------------
 
+
         /*
         关于 thenApply/thenApplyAsync VS thenCompose/thenComposeAsync 的区别：
         其实类似 Stream 中的 map 和 flatMap.
@@ -117,11 +118,5 @@ public class CompletableFutureDemo {
         ExecutorUtils.shutdown(executor);
     }
 
-    static void sleep(int t, TimeUnit u) {
-        try {
-            u.sleep(t);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 }
