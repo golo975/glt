@@ -13,7 +13,7 @@ public class TimeServer {
 
     public void bind(int port) throws Exception {
         // 配置服务端的NIO线程组
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();// TODO 默认的线程数是多少 ？
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
@@ -44,10 +44,10 @@ public class TimeServer {
     }
 
     /*
-运行时，需要在 vm option 中增加一下配置：
---add-opens
-java.base/jdk.internal.misc=ALL-UNNAMED
--Dio.netty.tryReflectionSetAccessible=true
+        运行时，需要在 vm option 中增加一下配置：
+        --add-opens
+        java.base/jdk.internal.misc=ALL-UNNAMED
+        -Dio.netty.tryReflectionSetAccessible=true
      */
     public static void main(String[] args) throws Exception {
         int port = 8080;

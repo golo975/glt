@@ -32,7 +32,7 @@ public class TimeClient {
             // 等待客户端链路关闭
             f.channel().closeFuture().sync();
         } finally {
-            // 优雅推出，释放NIO线程组
+            // 优雅退出，释放NIO线程组
             group.shutdownGracefully();
         }
     }
