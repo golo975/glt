@@ -1,4 +1,4 @@
-package com.gaolong.springbootdemo1;
+package com.gaolong.springbootdemo1.demo;
 
 import java.nio.channels.ClosedSelectorException;
 import java.util.concurrent.RecursiveAction;

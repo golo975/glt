@@ -1,4 +1,4 @@
-package com.gaolong.springbootdemo1;
+package com.gaolong.springbootdemo1.demo;
 
 import com.gaolong.springbootdemo1.util.ExecutorUtils;
 

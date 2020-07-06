@@ -1,2 +1,7 @@
 server:
   port: 8080
+
+user:
+  name: 张三
+  age: 19
+  gender: male

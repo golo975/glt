@@ -1,4 +1,4 @@
-package com.gaolong.springbootdemo1;
+package com.gaolong.springbootdemo1.demo;
 
 import java.io.File;
 import java.io.FileInputStream;

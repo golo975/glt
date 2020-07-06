@@ -1,4 +1,4 @@
-package com.gaolong.springbootdemo1;
+package com.gaolong.springbootdemo1.demo;
 
 import java.util.HashMap;
 import java.util.Map;
