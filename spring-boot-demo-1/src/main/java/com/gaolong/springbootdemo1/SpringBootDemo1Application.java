@@ -16,13 +16,13 @@ public class SpringBootDemo1Application {
         SpringApplication.run(SpringBootDemo1Application.class, args);
     }
 
-    @Value("${server.port}")
-    private String port;
-
-    @RequestMapping("hello")
-    public String hello() {
-        return port;
-//        return "Hello";
-    }
+//    @Value("${server.port}")
+//    private String port;
+//
+//    @RequestMapping("hello")
+//    public String hello() {
+//        return port;
+////        return "Hello";
+//    }
 
 }
