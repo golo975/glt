@@ -1,7 +1,19 @@
 server:
   port: 8080
 
-user:
-  name: 张三
+myuser:
+  name: bad
   age: 19
   gender: male
+spring:
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        min-idle: 0
+        max-idle: 8
