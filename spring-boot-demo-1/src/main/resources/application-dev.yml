@@ -1,10 +1,6 @@
 server:
   port: 8080
 
-myuser:
-  name: bad
-  age: 19
-  gender: male
 spring:
   redis:
     database: 0
@@ -19,9 +15,17 @@ spring:
         min-idle: 0
         max-idle: 8
 
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: 123456
+#    url: jdbc:mysql://localhost:3306/glt_1?characterEncoding=utf8
+#    type: com.alibaba.druid.pool.DruidDataSource
+
+glt:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    username: gaolong
-    password: 123456
-    url: jdbc:mysql://localhost:3306/
-    type: com.alibaba.druid.pool.DruidDataSource
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/glt_1?characterEncoding=utf8

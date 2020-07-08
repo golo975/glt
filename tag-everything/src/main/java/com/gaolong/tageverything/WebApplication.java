@@ -2,22 +2,15 @@ package com.gaolong.tageverything;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
  * @author gaolong
  */
 @SpringBootApplication
-public class WebApplication extends SpringBootServletInitializer {
+public class WebApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(WebApplication.class);
     }
 
 }
