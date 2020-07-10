@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyConfiguration {
 
-    @Bean
+    @Bean(name = "myUser")
     @ConfigurationProperties("myuser")
     public User myUser() {
         return new User();
